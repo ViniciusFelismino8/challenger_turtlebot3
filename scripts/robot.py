@@ -5,8 +5,7 @@ from actionlib_msgs.msg import GoalStatusArray
 import tf
 
 class Robot:
-  mo
- None
+  move_status = None
 
   def __init__(self, frame_id):
     rospy.loginfo("Init Turtlebot3")

@@ -23,7 +23,7 @@ class StateMachine:
       rospy.sleep(1)
 
       if self.state == 0:
-        rospy.loginfo("STATE 0")
+        rospy.loginfo_once("STATE 0")
         tag_id = self.robot.check_tag_id()
         print(tag_id)
         if tag_id:
