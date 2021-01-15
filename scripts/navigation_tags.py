@@ -17,14 +17,11 @@ class StateMachine:
 
   def __init__(self):
     rospy.init_node("machine", anonymous=True)
-    rospy.Subscriber("/tf", TFMessage, self.callback_apriltag, queen_size=1)
+    rospy.Subscriber("/tf", TFMessage, self.callback_apriltag, queue_size=1)
     self.robot = Robot('map')
-    self.case.append({'x': 6.6, 'y': 0.9, 'yaw': 0})
-    self.case.append({'x': 3.4, 'y': 6.6, 'yaw': 1.0})
-    self.case.append({'x': -6.8, 'y': 6.8, 'yaw': -3.14})
-    # self.case.append({'x': -6.5, 'y': -6.8, 'yaw': -1.57})
-    # self.case.append({'x': 6.4, 'y': -7.8, 'yaw': 0})
-    # self.case.append({'x': 0, 'y': 0, 'yaw': 0})
+    # self.case.append({'x': 6.6, 'y': 0.9, 'yaw': 0})
+    # self.case.append({'x': 3.4, 'y': 6.6, 'yaw': 1.0})
+    # self.case.append({'x': -6.8, 'y': 6.8, 'yaw': -3.14})
     rospy.timer.sleep(1)
 
   def callback_main(self, data):

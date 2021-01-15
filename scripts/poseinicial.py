@@ -24,4 +24,4 @@ class Robot:
     self.pub_move_to_goal.publish(msg_move_to_goal)
 
   def stop_move(self):
-    rospy.Publisher("/Explore/cancel", GoalID, queue_size=1).publish(GoalID())
+    self.pub_move_to_goal.publish()
