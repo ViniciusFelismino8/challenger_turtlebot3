@@ -15,18 +15,19 @@ def handle_turtle_pose(msg):
 
     t.header.stamp = rospy.Time.now()
     t.header.frame_id = "camera"
-    teste = str(msg.detections[0].id)
-    teste2 = re.findall('\d+', teste )[0]
-    t.child_frame_id = "tag_"+ str(teste2)
-    t.transform.translation.x = msg.detections[0].pose.pose.pose.position.x
-    t.transform.translation.y = msg.detections[0].pose.pose.pose.position.y
-    t.transform.translation.z = msg.detections[0].pose.pose.pose.position.z
-    t.transform.rotation.x = msg.detections[0].pose.pose.pose.orientation.x
-    t.transform.rotation.y = msg.detections[0].pose.pose.pose.orientation.y
-    t.transform.rotation.z = msg.detections[0].pose.pose.pose.orientation.z
-    t.transform.rotation.w = msg.detections[0].pose.pose.pose.orientation.w
 
-    br.sendTransform(t)
+    if len(msg.detections) > 0:
+        teste = str(msg.detections[0].id)
+        teste2 = re.findall('\d+', teste )[0]
+        t.child_frame_id = "tag_"+ str(teste2)
+        t.transform.translation.x = msg.detections[0].pose.pose.pose.position.x
+        t.transform.translation.y = msg.detections[0].pose.pose.pose.position.y
+        t.transform.translation.z = msg.detections[0].pose.pose.pose.position.z
+        t.transform.rotation.x = msg.detections[0].pose.pose.pose.orientation.x
+        t.transform.rotation.y = msg.detections[0].pose.pose.pose.orientation.y
+        t.transform.rotation.z = msg.detections[0].pose.pose.pose.orientation.z
+        t.transform.rotation.w = msg.detections[0].pose.pose.pose.orientation.w
+        br.sendTransform(t)
 
 if __name__ == '__main__':
     rospy.init_node('tf2_turtle_broadcaster')

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import rospy
 from geometry_msgs.msg import PoseStamped
-from actionlib_msgs.msg import GoalStatusArray
+from actionlib_msgs.msg import GoalID, GoalStatusArray
 import tf
+
 
 class Robot:
   move_status = None
@@ -45,11 +46,11 @@ class Robot:
           trans, rot = self.listener.lookupTransform('/camera', '/tag_2', rospy.Time(0))
           return 2
         except:
-          return None
+          return -1
 
   def get_tag_pose(self, id):
     try:
-      trans, rot = self.listener.lookupTransform('/camera', '/tag_'+id, rospy.Time(0))
+      trans, rot = self.listener.lookupTransform('/camera', '/tag_'+str(id), rospy.Time(0))
       return trans, rot
     except:
       return None
@@ -61,7 +62,10 @@ class Robot:
       id = id + 1
     
     try:
-      trans, rot = self.listener.lookupTransform('/camera', '/pose'+id, rospy.Time(0))
+      trans, rot = self.listener.lookupTransform('/camera', '/pose'+str(id), rospy.Time(0))
       return trans, rot
     except:
       return None
+
+  def stop_move(self):
+    rospy.Publisher("/move_base_simple/goal", PoseStamped, queue_size=1).publish(PoseStamped())
