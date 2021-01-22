@@ -6,7 +6,7 @@ import tf
 
 
 class Robot:
-  move_status = None
+  move_status = 0
 
   def __init__(self, frame_id):
     rospy.loginfo("Init Turtlebot3")
@@ -35,37 +35,39 @@ class Robot:
 
   def check_tag_id(self):
     try:
-      trans, rot = self.listener.lookupTransform('/camera', '/tag_0', rospy.Time(0))
-      return 0
+      trans, rot = self.listener.lookupTransform('/base_link', '/tag_130', rospy.Time(0))
+      return 130
     except:
       try:
-        trans, rot = self.listener.lookupTransform('/camera', '/tag_1', rospy.Time(0))
-        return 1
+        trans, rot = self.listener.lookupTransform('/base_link', '/tag_132', rospy.Time(0))
+        return 132
       except:
         try:
-          trans, rot = self.listener.lookupTransform('/camera', '/tag_2', rospy.Time(0))
-          return 2
+          trans, rot = self.listener.lookupTransform('/base_link', '/tag_134', rospy.Time(0))
+          return 134
         except:
           return -1
 
   def get_tag_pose(self, id):
     try:
-      trans, rot = self.listener.lookupTransform('/camera', '/tag_'+str(id), rospy.Time(0))
+      trans, rot = self.listener.lookupTransform('/base_link', '/near_tag_'+str(id), rospy.Time(0))
       return trans, rot
     except:
       return None
 
   def get_tag_child(self, id):
-    if id == 2:
-      id = 0
-    else: 
-      id = id + 1
-    
     try:
-      trans, rot = self.listener.lookupTransform('/camera', '/pose'+str(id), rospy.Time(0))
+      trans, rot = self.listener.lookupTransform('/base_link', '/pose'+str(id), rospy.Time(0))
       return trans, rot
     except:
       return None
+
+  def get_tag_dist(self, id):
+    try:
+      trans, rot = self.listener.lookupTransform('/base_link', '/near_tag_'+str(id), rospy.Time(0))
+      return trans[0]
+    except:
+      return -1
 
   def stop_move(self):
     rospy.Publisher("/move_base_simple/goal", PoseStamped, queue_size=1).publish(PoseStamped())
